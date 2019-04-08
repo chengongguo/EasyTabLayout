@@ -25,3 +25,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.annotation:annotation:1.0.0-beta01'
 }
+
+apply plugin: 'com.novoda.bintray-release'
+publish {
+    userOrg = 'chengongguo'
+    groupId = 'com.cgg.android'
+    artifactId = 'easytablayout'
+    publishVersion = '0.0.1'
+    desc = 'Oh hi, this is a nice easy tablayout'
+    website = 'https://github.com/chengongguo/bintray-release'
+}
