@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">EasyTabLayout</string>
+    <string name="main_activity">Main</string>
+    <string name="config_activity">Config</string>
+</resources>

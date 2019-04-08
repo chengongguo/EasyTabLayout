@@ -1,0 +1,30 @@
+[
+  {
+    "name": "home",
+    "title": "首页",
+    "unSelectedUrl": "tab/icon/tab_home_normal.png",
+    "selectedUrl": "tab/icon/tab_home_selected.png",
+    "hide": false
+  },
+  {
+    "name": "video",
+    "title": "视频",
+    "unSelectedUrl": "tab/icon/tab_video_normal.png",
+    "selectedUrl": "tab/icon/tab_video_selected.png",
+    "hide": false
+  },
+  {
+    "name": "micro",
+    "title": "头条",
+    "unSelectedUrl": "tab/icon/tab_micro_normal.png",
+    "selectedUrl": "tab/icon/tab_micro_selected.png",
+    "hide": false
+  },
+  {
+    "name": "me",
+    "title": "我的",
+    "unSelectedUrl": "tab/icon/tab_me_normal.png",
+    "selectedUrl": "tab/icon/tab_me_selected.png",
+    "hide": false
+  }
+]
