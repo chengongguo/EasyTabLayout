@@ -1,11 +1,8 @@
-package com.cgg.tablayout;
-
-import com.cgg.easyTabLayout.R;
+package com.cgg.android.tablayout;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,7 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cgg.easyTabLayout.R;
+
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 public class EasyTabLayout extends LinearLayout {
     private final static String TAG = EasyTabLayout.class.getSimpleName();

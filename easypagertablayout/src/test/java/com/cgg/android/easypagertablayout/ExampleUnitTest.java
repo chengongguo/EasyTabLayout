@@ -1,4 +1,4 @@
-package com.cgg.tablayout;
+package com.cgg.android.easypagertablayout;
 
 import org.junit.Test;
 

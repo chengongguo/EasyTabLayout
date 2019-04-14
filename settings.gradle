@@ -1,1 +1,4 @@
-include ':app', ':easytablayout', ':server'
+include ':app'
+include ':server'
+include ':easytablayout'
+include ':easypagertablayout'

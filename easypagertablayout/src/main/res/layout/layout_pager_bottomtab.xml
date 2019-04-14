@@ -6,14 +6,14 @@
     android:orientation="vertical"
     android:clipChildren="false">
 
-    <com.cgg.demo.base.BaseNoScrollViewPager
-        android:id="@+id/mainViewPager"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/easy_ViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <com.cgg.tablayout.EasyTabLayout
-        android:id="@+id/easyTabLayout"
+    <com.cgg.android.tablayout.EasyTabLayout
+        android:id="@+id/easy_TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
