@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="0dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
     android:gravity="center"
-    android:clipChildren="false"
-    tools:layout_width="wrap_content">
+    android:clipChildren="false">
 
     <RelativeLayout
         android:id="@+id/tab_icon_container"
@@ -20,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
             android:id="@+id/tab_super_script"

@@ -4,7 +4,6 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.cgg.android.easypagertablayout.EasyPagerTabLayout;
-import com.cgg.android.easypagertablayout.PagerTabLayout;
 import com.cgg.android.easypagertablayout.TabBean;
 import com.cgg.android.tablayout.EasyTabLayout;
 import com.cgg.demo.ImageLoader.ImageLoader;
@@ -23,7 +22,7 @@ import butterknife.BindView;
 
 public class ConfigActivity extends BaseButterKnifeActivity {
     private static final String TAG = Config.TAG_PREFIX + ConfigActivity.class.getSimpleName();
-    @BindView(R.id.easyPagerBottomTabLayout)
+    @BindView(R.id.pagerBottomTabLayout)
     EasyPagerTabLayout easyPagerBottomTabLayout;
 
     @Override
@@ -54,18 +53,19 @@ public class ConfigActivity extends BaseButterKnifeActivity {
         if (tabBeanList == null || tabBeanList.size() == 0) {
             return;
         }
-        easyPagerBottomTabLayout.initPagerTab(getSupportFragmentManager(), tabBeanList, 2,
-                new PagerTabLayout.ProviderFragmentListener() {
-                    @Override
-                    public Fragment providerFragment(String tabName, String tabTitle) {
-                        return new DefaultFragment();
-                    }
-                }, new EasyTabLayout.ImageListener() {
-                    @Override
-                    public void setImageUrl(ImageView imageView, String url, int iconRes) {
-                        String fullPath = PathParser.getFullPath(url);
-                        new ImageLoader(BaseApplication.sContext).setImageUrl(imageView, fullPath, iconRes);
-                    }
-                });
+        easyPagerBottomTabLayout.initPagerTab(getSupportFragmentManager(), tabBeanList, 2);
+        easyPagerBottomTabLayout.setProviderFragmentListener(new EasyPagerTabLayout.ProviderFragmentListener() {
+            @Override
+            public Fragment providerFragment(String tabName, String tabTitle) {
+                return new DefaultFragment();
+            }
+        });
+        easyPagerBottomTabLayout.setImageListener(new EasyTabLayout.ImageListener() {
+            @Override
+            public void setImageUrl(ImageView imageView, String url, int iconRes) {
+                String fullPath = PathParser.getFullPath(url);
+                new ImageLoader(BaseApplication.sContext).setImageUrl(imageView, fullPath, iconRes);
+            }
+        });
     }
 }

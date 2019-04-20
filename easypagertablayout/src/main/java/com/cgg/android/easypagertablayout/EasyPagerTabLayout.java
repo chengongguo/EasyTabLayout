@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.cgg.android.tablayout.EasyTabLayout;
 import com.cgg.android.tablayout.Tab;
 
 import java.util.ArrayList;
@@ -18,6 +17,11 @@ import androidx.fragment.app.FragmentManager;
 
 public class EasyPagerTabLayout extends PagerTabLayout {
     private static final String TAG = EasyPagerTabLayout.class.getSimpleName();
+    private ProviderFragmentListener mProviderFragmentListener;
+
+    public interface ProviderFragmentListener {
+        Fragment providerFragment(String tabName, String tabTitle);
+    }
 
     public EasyPagerTabLayout(Context context) {
         super(context);
@@ -31,33 +35,16 @@ public class EasyPagerTabLayout extends PagerTabLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void initPagerTab(FragmentManager fragmentManager, List<TabFragment> tabFragmentList,
-                             int selectedId,
-                             EasyTabLayout.ImageListener imageListener) {
-        if (fragmentManager == null || tabFragmentList == null || tabFragmentList.size() == 0) {
-            return;
-        }
-        List<Tab> tabs = new ArrayList<>();
-        List<Fragment> fragments = new ArrayList<>();
-        for (TabFragment tabFragment : tabFragmentList) {
-            if (tabFragment.tab == null || tabFragment.fragment == null) {
-                continue;
-            }
-            tabs.add(tabFragment.tab);
-            if (!TextUtils.isEmpty(tabFragment.tab.title)) {
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("tabTitle", tabFragment.tab.title);
-                tabFragment.fragment.setArguments(bundle1);
-            }
-            fragments.add(tabFragment.fragment);
-        }
-        Log.i(TAG, "init() " + tabs.toString());
-        initPagerTab(fragmentManager, tabs, fragments, LAYOUT_TYPE_PAGER_BOTTOM_TAB, selectedId, null);
+    public void setProviderFragmentListener(ProviderFragmentListener providerFragmentListener) {
+        this.mProviderFragmentListener = providerFragmentListener;
     }
 
-    public void initPagerTab(FragmentManager fragmentManager, List<TabBean> tabBeanList, int selectedId,
-                             ProviderFragmentListener providerFragmentListener, EasyTabLayout.ImageListener imageListener) {
-        if (fragmentManager == null || providerFragmentListener == null) {
+    public void initPagerTab(FragmentManager fragmentManager, List<TabBean> tabBeanList, int selectedId) {
+        if (fragmentManager == null) {
+            return;
+        }
+        if (mProviderFragmentListener == null) {
+            Log.e(TAG, "you has not set fragment.");
             return;
         }
         if (tabBeanList == null || tabBeanList.size() == 0) {
@@ -70,8 +57,11 @@ public class EasyPagerTabLayout extends PagerTabLayout {
                 continue;
             }
             Tab tab = new Tab(tabBean.title, tabBean.unSelectedUrl, tabBean.selectedUrl);
+            Fragment fragment = mProviderFragmentListener.providerFragment(tabBean.name, tab.title);
+            if (fragment == null) {
+                continue;
+            }
             tabs.add(tab);
-            Fragment fragment = providerFragmentListener.providerFragment(tabBean.name, tab.title);
             Bundle bundle1 = new Bundle();
             if (!TextUtils.isEmpty(tabBean.name)) {
                 bundle1.putString("tabName", tabBean.name);
@@ -85,7 +75,7 @@ public class EasyPagerTabLayout extends PagerTabLayout {
         if (tabs.size() == 0 || tabs.size() != fragments.size()) {
             return;
         }
-        initPagerTab(fragmentManager, tabs, fragments, LAYOUT_TYPE_PAGER_BOTTOM_TAB, selectedId, imageListener);
+        init(fragmentManager, tabs, fragments, selectedId);
     }
 
 }

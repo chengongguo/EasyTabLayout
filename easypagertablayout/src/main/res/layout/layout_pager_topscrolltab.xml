@@ -5,15 +5,10 @@
     android:clipChildren="false"
     android:orientation="vertical">
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.cgg.android.tablayout.EasyTabLayout
-            android:id="@+id/easy_TabLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </HorizontalScrollView>
+    <com.cgg.android.tablayout.EasyTabLayout
+        android:id="@+id/easy_TabLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/easy_ViewPager"

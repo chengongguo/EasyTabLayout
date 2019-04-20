@@ -12,7 +12,7 @@
         android:text="I am config activity" />
 
     <com.cgg.android.easypagertablayout.EasyPagerTabLayout
-        android:id="@+id/easyPagerBottomTabLayout"
+        android:id="@+id/pagerBottomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

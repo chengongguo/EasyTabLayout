@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:text="I am main activity" />
 
-    <com.cgg.android.easypagertablayout.EasyPagerTabLayout
-        android:id="@+id/easyPagerBottomTabLayout"
+    <com.cgg.android.easypagertablayout.PagerTabLayout
+        android:id="@+id/pagerBottomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

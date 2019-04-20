@@ -9,29 +9,45 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cgg.easyTabLayout.R;
 
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 public class EasyTabLayout extends LinearLayout {
     private final static String TAG = EasyTabLayout.class.getSimpleName();
+    public static final int LAYOUT_TYPE_BOTTOM_TAB = 1;
+    public static final int LAYOUT_TYPE_TOP_SCROLL_TAB = 2;
+    public static final int LAYOUT_TYPE_LEFT_VERTICAL_SCROLL_TAB = 3;
+    public final static String DIVIDER_LINE_COLOR = "#BBBBBB";
     public final static String UNSELECT_TEXT_COLOR = "#666666";
     public final static String SELECT_TEXT_COLOR = "#FF0000";
     private int mAutoAddId = -1;
     private int mSelectedId = -1;
     private int mUnSelectTextColor = Color.parseColor(UNSELECT_TEXT_COLOR);
     private int mSelectTextColor = Color.parseColor(SELECT_TEXT_COLOR);
+    private int mLayoutRes = R.layout.layout_bottom_tablayout;
     private TabListener mTabListener;
     private ImageListener mImageListener;
-    private View mTopLine;
     private LinearLayout mTabContainer;
+
+    private int mBackgroundColor;
+    private int mDividerLineHeight = 1;
+    private int mDividerLineColor = Color.parseColor(DIVIDER_LINE_COLOR);
+    private int mItemPaddingLeft;
+    private int mItemPaddingTop;
+    private int mItemPaddingRight;
+    private int mItemPaddingBottom;
+
 
     public interface TabListener {
         void onTabSelected(int selectedId);
@@ -59,9 +75,6 @@ public class EasyTabLayout extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         setClipChildren(false);
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.easy_tablayout, this);
-        mTopLine = view.findViewById(R.id.easy_tablayout_top_line);
-        mTabContainer = view.findViewById(R.id.easy_tablayout_tab_container);
     }
 
     public void setTabListener(TabListener tabListener) {
@@ -70,6 +83,10 @@ public class EasyTabLayout extends LinearLayout {
 
     public void setImageListener(ImageListener imageListener) {
         mImageListener = imageListener;
+    }
+
+    public void configLayoutRes(@LayoutRes int layoutRes) {
+        mLayoutRes = layoutRes;
     }
 
     public void setHeight(int height) {
@@ -82,38 +99,100 @@ public class EasyTabLayout extends LinearLayout {
         setLayoutParams(layoutParams);
     }
 
-    public void setTopLineHeight(int height) {
-        ViewGroup.LayoutParams layoutParams = mTopLine.getLayoutParams();
-        layoutParams.height = UnitUtil.dp2px(getContext(), height);
-        mTopLine.setLayoutParams(layoutParams);
-    }
-
-    public void setTopLineColor(int color) {
-        mTopLine.setBackgroundColor(color);
-    }
-
-    public void setTextColorStr(String unSelectTextColorStr, String selectTextColorStr) {
+    public void configDividerLineColor(String colorStr) {
         try {
-            int unSelectTextColor = Color.parseColor(unSelectTextColorStr);
-            int selectTextColor = Color.parseColor(selectTextColorStr);
-            mUnSelectTextColor = unSelectTextColor;
-            mSelectTextColor = selectTextColor;
+            mDividerLineColor = Color.parseColor(colorStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setTextColor(int unSelectTextColor, int selectTextColor) {
+    public void configDividerLineColor(int color) {
+        mDividerLineColor = color;
+    }
+
+    public void configDividerLineHeight(int height) {
+        mDividerLineHeight = height;
+    }
+
+    public void setHeight(View view, int height) {
+        if (view == null || view.getLayoutParams() == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.height = UnitUtil.dp2px(getContext(), height);
+        view.setLayoutParams(layoutParams);
+    }
+
+    public void setColor(View view, int color) {
+        if (view == null) {
+            return;
+        }
+        view.setBackgroundColor(color);
+    }
+
+    public void configTextColorStr(String unSelectTextColorStr, String selectTextColorStr) {
+        try {
+            mUnSelectTextColor = Color.parseColor(unSelectTextColorStr);
+            mSelectTextColor = Color.parseColor(selectTextColorStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void configTextColor(int unSelectTextColor, int selectTextColor) {
         mUnSelectTextColor = unSelectTextColor;
         mSelectTextColor = selectTextColor;
     }
 
-    public void init(List<Tab> tabList) {
-        init(tabList, 0);
+    public void configBackgroundColor(String backgroundColorStr) {
+        try {
+            mBackgroundColor = Color.parseColor(backgroundColorStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void configBackgroundColor(int backgroundColor) {
+        mBackgroundColor = backgroundColor;
+    }
+
+    public void configLayoutType(int layoutType) {
+        switch (layoutType) {
+            case LAYOUT_TYPE_BOTTOM_TAB:
+                mLayoutRes = R.layout.layout_bottom_tablayout;
+                break;
+            case LAYOUT_TYPE_TOP_SCROLL_TAB:
+                mLayoutRes = R.layout.layout_top_scroll_tablayout;
+                break;
+            case LAYOUT_TYPE_LEFT_VERTICAL_SCROLL_TAB:
+                mLayoutRes = R.layout.layout_left_vertical_scroll_tablayout;
+                break;
+        }
+    }
+
+    public void configItemPadding(int leftDp, int topDp, int rightDp, int bottomDp) {
+        mItemPaddingLeft = UnitUtil.dp2px(getContext(), leftDp);
+        mItemPaddingTop = UnitUtil.dp2px(getContext(), topDp);
+        mItemPaddingRight = UnitUtil.dp2px(getContext(), rightDp);
+        mItemPaddingBottom = UnitUtil.dp2px(getContext(), bottomDp);
     }
 
     public void init(List<Tab> tabList, int selectedId) {
-        if (tabList == null || tabList.size() == 0) {
+        if (mLayoutRes == 0) {
+            Log.e(TAG, "you has not set LayoutRes.");
+            return;
+        }
+        View view = LayoutInflater.from(getContext()).inflate(mLayoutRes, this);
+        if (view == null) {
+            return;
+        }
+        view.setBackgroundColor(mBackgroundColor);
+        View dividerLine = view.findViewById(R.id.easy_tablayout_divider_line);
+        setHeight(dividerLine, mDividerLineHeight);
+        setColor(dividerLine, mDividerLineColor);
+        mTabContainer = view.findViewById(R.id.easy_tablayout_container);
+        if (mTabContainer == null || tabList == null || tabList.size() == 0) {
             return;
         }
         for (int i = 0; i < tabList.size(); i++) {
@@ -124,16 +203,16 @@ public class EasyTabLayout extends LinearLayout {
     }
 
     private void insertTabView(Tab tab, int index) {
-        if (tab == null) {
+        if (mTabContainer == null || tab == null) {
             return;
         }
         if (tab.id == -1) {
             tab.id = ++mAutoAddId;
         }
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.easy_tablayout_item, this, false);
-        view.setTag(tab);
-        updateTabViewState(view, tab.title, mUnSelectTextColor, tab.unSelectedUrl, tab.unSelectedIcon);
-        view.setOnClickListener(new OnClickListener() {
+        LinearLayout itemView = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.easy_tablayout_item, this, false);
+        itemView.setTag(tab);
+        updateTabViewState(itemView, tab.title, mUnSelectTextColor, tab.unSelectedUrl, tab.unSelectedIcon);
+        itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Tab tab = (Tab) view.getTag();
@@ -142,15 +221,73 @@ public class EasyTabLayout extends LinearLayout {
         });
         int childCount = mTabContainer.getChildCount();
         if (index < 0) {
-            mTabContainer.addView(view, 0);
+            mTabContainer.addView(itemView, 0);
         } else if (index >= childCount) {
-            mTabContainer.addView(view);
+            mTabContainer.addView(itemView);
         } else {
-            mTabContainer.addView(view, index);
+            mTabContainer.addView(itemView, index);
+        }
+        itemView.setPadding(mItemPaddingLeft, mItemPaddingTop, mItemPaddingRight, mItemPaddingBottom);
+        setLayoutParams(itemView);
+    }
+
+    private void setLayoutParams(LinearLayout itemView) {
+        Log.i(TAG, "setLayoutParams() getParent()=" + getParent());
+        LinearLayout.LayoutParams layoutParams;
+        ViewGroup parent = (ViewGroup) mTabContainer.getParent();
+        if (parent instanceof HorizontalScrollView || parent instanceof ScrollView) {
+            layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            //            if (mTabContainer.getOrientation() == LinearLayout.VERTICAL) {
+            //                int height = getHeight() < parent.getHeight() ? parent.getHeight() : getHeight();
+            //                Log.i(TAG, "setLayoutParams() height=" + height);
+            //                layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height);
+            //            } else {
+            //                int width = getWidth() < parent.getWidth() ? parent.getWidth() : getWidth();
+            //                Log.i(TAG, "setLayoutParams() width=" + width);
+            //                layoutParams = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            //            }
+        } else {
+            if (mTabContainer.getOrientation() == LinearLayout.VERTICAL) {
+                layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0, 1.0f);
+            } else {
+                layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+            }
+        }
+        itemView.setLayoutParams(layoutParams);
+    }
+
+    private void updateTabViewState(View view, String title, int textColor, String url, int defaultIconRes) {
+        if (view == null) {
+            return;
+        }
+        Log.i(TAG, "updateTabViewState() " + view + " title:" + title + " textColor:" + textColor + " url:" + url + " defaultIconRes" + defaultIconRes);
+        RelativeLayout tabIconContainer = view.findViewById(R.id.tab_icon_container);
+        ImageView tabIcon = view.findViewById(R.id.tab_icon);
+        TextView tabTitle = view.findViewById(R.id.tab_title);
+        if (!TextUtils.isEmpty(title)) {
+            tabTitle.setVisibility(View.VISIBLE);
+            tabTitle.setText(title);
+            tabTitle.setTextColor(textColor);
+        } else {
+            tabTitle.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(url)) {
+            tabIconContainer.setVisibility(View.VISIBLE);
+            if (mImageListener != null) {
+                mImageListener.setImageUrl(tabIcon, url, defaultIconRes);
+            }
+        } else if (defaultIconRes != 0) {
+            tabIconContainer.setVisibility(View.VISIBLE);
+            tabIcon.setImageResource(defaultIconRes);
+        } else {
+            tabIconContainer.setVisibility(View.GONE);
         }
     }
 
     public void selectTab(int selectedId) {
+        if (mTabContainer == null) {
+            return;
+        }
         Log.i(TAG, "selectTab() selectedId=" + selectedId);
         int childCount = mTabContainer.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -176,33 +313,6 @@ public class EasyTabLayout extends LinearLayout {
         mSelectedId = selectedId;
     }
 
-    private void updateTabViewState(View view, String title, int textColor, String url, int defaultIconRes) {
-        if (view == null) {
-            return;
-        }
-        Log.i(TAG, "updateTabViewState() " + view + " title:" + title + " textColor:" + textColor + " url:" + url + " defaultIconRes" + defaultIconRes);
-        ImageView tabIcon = view.findViewById(R.id.tab_icon);
-        TextView tabTitle = view.findViewById(R.id.tab_title);
-        if (!TextUtils.isEmpty(title)) {
-            tabTitle.setVisibility(View.VISIBLE);
-            tabTitle.setText(title);
-            tabTitle.setTextColor(textColor);
-        } else {
-            tabTitle.setVisibility(View.GONE);
-        }
-        if (!TextUtils.isEmpty(url)) {
-            tabIcon.setVisibility(View.VISIBLE);
-            if (mImageListener != null) {
-                mImageListener.setImageUrl(tabIcon, url, defaultIconRes);
-            }
-        } else if (defaultIconRes != 0) {
-            tabIcon.setVisibility(View.VISIBLE);
-            tabIcon.setImageResource(defaultIconRes);
-        } else {
-            tabIcon.setVisibility(View.GONE);
-        }
-    }
-
     public void addTab(Tab tab) {
         int childCount = mTabContainer.getChildCount();
         insertTabView(tab, childCount);
@@ -220,6 +330,9 @@ public class EasyTabLayout extends LinearLayout {
     }
 
     public int getTabIndex(int id) {
+        if (mTabContainer == null) {
+            return -1;
+        }
         int childCount = mTabContainer.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = mTabContainer.getChildAt(i);

@@ -8,6 +8,10 @@ public class Tab {
     public String unSelectedUrl;
     public String title;
 
+    public Tab(String title) {
+        this.title = title;
+    }
+
     public Tab(String title, int unSelectedIcon, int selectedIcon) {
         this.title = title;
         this.unSelectedIcon = unSelectedIcon;
