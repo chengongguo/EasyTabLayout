@@ -2,9 +2,11 @@
 
 buildscript {
     repositories {
+        // 本地maven仓库
+        maven { url "file:D:\\maven\\localMaven" }
+        maven { url 'https://dl.bintray.com/chengongguo/maven' }
         google()
         jcenter() { url 'https://maven.aliyun.com/repository/jcenter' }
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -16,9 +18,11 @@ buildscript {
 
 allprojects {
     repositories {
+        // 本地maven仓库
+        maven { url "file:D:\\maven\\localMaven" }
+        maven { url 'https://dl.bintray.com/chengongguo/maven' }
         google()
         jcenter() { url 'https://maven.aliyun.com/repository/jcenter' }
-
     }
 }
 

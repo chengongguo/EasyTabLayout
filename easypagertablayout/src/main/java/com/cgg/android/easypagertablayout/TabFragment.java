@@ -1,6 +1,6 @@
-package com.cgg.demo.tab;
+package com.cgg.android.easypagertablayout;
 
-import com.cgg.tablayout.Tab;
+import com.cgg.android.tablayout.Tab;
 
 import androidx.fragment.app.Fragment;
 

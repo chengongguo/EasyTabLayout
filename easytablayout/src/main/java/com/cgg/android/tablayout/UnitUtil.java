@@ -1,4 +1,4 @@
-package com.cgg.tablayout;
+package com.cgg.android.tablayout;
 
 import android.content.Context;
 

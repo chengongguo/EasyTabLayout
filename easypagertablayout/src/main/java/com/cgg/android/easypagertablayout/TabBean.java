@@ -1,8 +1,8 @@
-package com.cgg.demo.tab;
+package com.cgg.android.easypagertablayout;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TabLayoutBean {
+public class TabBean {
 
     /**
      * name : home

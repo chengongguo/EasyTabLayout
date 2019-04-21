@@ -9,9 +9,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I am main activity" />
+        android:text="I am config activity" />
 
-    <com.cgg.android.easypagertablayout.PagerTabLayout
+    <com.cgg.android.easypagertablayout.EasyPagerTabLayout
         android:id="@+id/pagerBottomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

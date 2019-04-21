@@ -22,7 +22,7 @@ dependencies {
 
 3. 在布局中添加EasyTabLayout组件
 ```xml
- <com.cgg.tablayout.EasyTabLayout
+ <com.cgg.android.tablayout.EasyTabLayout
    android:id="@+id/easyTabLayout" 
    android:layout_width="match_parent"
    android:layout_height="wrap_content"/>

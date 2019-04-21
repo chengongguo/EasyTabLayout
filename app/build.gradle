@@ -30,8 +30,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    //easytablayout
-    implementation project(':easytablayout')
+    //easypagertablayout
+//    implementation project(':easypagertablayout')
+    api 'com.cgg.android:easypagertablayout:0.0.1'
     //butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'

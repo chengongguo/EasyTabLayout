@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    //easytablayout
+//    api project(':easytablayout')
+    api 'com.cgg.android:easytablayout:0.0.2'
+}
+
+version '0.0.1'
+apply from: '../uploadArchive.gradle'
+
+apply plugin: 'com.novoda.bintray-release'
+publish {
+    userOrg = 'chengongguo'
+    groupId = 'com.cgg.android'
+    artifactId = 'easypagertablayout'
+    publishVersion = version
+    desc = 'hi, this is a nice easy pager tablayout'
+    website = 'https://github.com/chengongguo/bintray-release'
+}
+
